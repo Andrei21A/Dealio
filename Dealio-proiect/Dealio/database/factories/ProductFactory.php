@@ -23,8 +23,8 @@ class ProductFactory extends Factory
             $user = User::factory()->create();
         }
         return [
-            'user_id' => rand(1, 100),
-            'title' => fake()->sentance(3),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory()->create()->id,
+            'title' => fake()->sentence(3),
             'description' => fake()->paragraph(),
             'image_path' => fake()->imageUrl(),
             'category' => fake()->randomElement(['Shoes', 'Clothes', 'Accessories']),

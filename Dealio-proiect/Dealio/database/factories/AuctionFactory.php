@@ -18,18 +18,16 @@ class AuctionFactory extends Factory
 
     public function definition(): array
     {
-        $product = Product::inRandomOrder()->first();
-        if (!$product) {
-            $product = Product::factory()->create();
-        }
-        $product = Product::factory()->create();
+        $product = Product::inRandomOrder()->first() ?? Product::factory()->create();
+        $startingPrice = fake()->randomFloat(2, 10, 1000);
+
         return [
             'product_id' => $product->id,
             'user_id' => $product->user_id,
             'start_time' => now(),
             'end_time' => now()->addDays(rand(1, 7)),
-            'starting_price' => fake()->randomFloat(2, 10, 1000),
-            'highest_bid' => fake()->randomFloat(2, 10, 1000),
+            'starting_price' => $startingPrice,
+            'highest_bid' => fake()->randomFloat(2, $startingPrice, $startingPrice * 1.5),
         ];
     }
 }

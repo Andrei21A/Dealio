@@ -17,7 +17,7 @@ class ReviewFactory extends Factory
      */
     public function definition(): array
     {
-        $product = Product::factory()->create();
+        $product = Product::inRandomOrder()->first() ?? Product::factory()->create();
         return [
             'product_id' => $product->id,
             'user_id' => $product->user_id,

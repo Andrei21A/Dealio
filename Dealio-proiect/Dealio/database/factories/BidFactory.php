@@ -18,17 +18,13 @@ class BidFactory extends Factory
      */
     public function definition(): array
     {
-        $product = Product::factory()->create();
-        $auction = Auction::where('product_id', $product->id)->first();
-        if (!$auction) {
-            $auction = Auction::factory()->create(['product_id' => $product->id, 'user_id' => $product->user_id]);
-        }
+        $auction = Auction::inRandomOrder()->first() ?? Auction::factory()->create();
         return [
-            'user_id' => $product->user_id,
-            'product_id' => $product->id,
+            'user_id' => $auction->user_id,
+            'product_id' => $auction->id,
             'auction_id' => $auction->id,
             'amount' => fake()->randomFloat(2, 10, 1000),
-            'bid_time' => now(),
+            'bid_time' => fake()->dateTimeBetween('-1 month', 'now'),
         ];
     }
 }
