@@ -2,7 +2,7 @@
 
     <div>
         Hello
-        <Link href="/hello"> Show Page </Link>
+        <Link href="/products"> Show Page </Link>
         <div>{{ message }}</div>
     </div>
 

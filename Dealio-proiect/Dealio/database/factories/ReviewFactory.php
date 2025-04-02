@@ -17,12 +17,15 @@ class ReviewFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = fake()->dateTimeBetween('2023-01-01', 'now');
         $product = Product::inRandomOrder()->first() ?? Product::factory()->create();
         return [
             'product_id' => $product->id,
             'user_id' => $product->user_id,
             'rating' => fake()->numberBetween(1, 5),
             'comment' => fake()->sentence(),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt
         ];
     }
 }

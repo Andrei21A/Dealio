@@ -23,6 +23,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = fake()->dateTimeBetween('2023-01-01', 'now');
+
         return [
             'user_name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -33,7 +35,9 @@ class UserFactory extends Factory
             'phone_number' => fake()->phoneNumber(),
             'role' => fake()->randomElement(['admin', 'user', 'seller']),
             'address' => fake()->address(),
-            'profile_photo_path' => fake()->imageUrl()
+            'profile_photo_path' => fake()->imageUrl(),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt
         ];
     }
 

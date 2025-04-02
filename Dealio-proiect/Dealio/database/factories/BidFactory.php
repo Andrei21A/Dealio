@@ -19,12 +19,15 @@ class BidFactory extends Factory
     public function definition(): array
     {
         $auction = Auction::inRandomOrder()->first() ?? Auction::factory()->create();
+        $createdAt = fake()->dateTimeBetween('2023-01-01', 'now');
         return [
             'user_id' => $auction->user_id,
             'product_id' => $auction->id,
             'auction_id' => $auction->id,
             'amount' => fake()->randomFloat(2, 10, 1000),
             'bid_time' => fake()->dateTimeBetween('-1 month', 'now'),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt
         ];
     }
 }

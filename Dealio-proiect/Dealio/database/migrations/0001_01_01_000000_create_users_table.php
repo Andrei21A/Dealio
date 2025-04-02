@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('password');
             $table->string('full_name');
             $table->string('phone_number');
-            $table->string('role');
+            $table->enum('role', ['admin', 'seller', 'user'])->default('user');
             $table->string('address');
             $table->string('profile_photo_path')->nullable();
             $table->rememberToken();

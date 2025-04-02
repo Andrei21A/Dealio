@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class OrderFactory extends Factory
 {
+    
     /**
      * Define the model's default state.
      *
@@ -18,12 +19,14 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         $product = Product::factory()->create();
-
+        $createdAt = fake()->dateTimeBetween('2023-01-01', 'now');
         return [
             'product_id' => $product->id,
             'user_id' => $product->user_id,
             'total_price' => fake()->randomFloat(2, 10, 1000),
             'status' => fake()->randomElement(['pending', 'completed', 'cancelled']),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt
         ];
     }
 }

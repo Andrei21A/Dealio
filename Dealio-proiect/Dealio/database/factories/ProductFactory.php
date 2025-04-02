@@ -18,18 +18,20 @@ class ProductFactory extends Factory
 
     public function definition(): array
     {
-        $user = User::inRandomOrder()->first();
-        if (!$user) {
-            $user = User::factory()->create();
-        }
+        $user = User::inRandomOrder()->first() ?? User::factory()->create();
+
+        $createdAt = fake()->dateTimeBetween('2023-01-01', 'now');
+
         return [
-            'user_id' => User::inRandomOrder()->first()->id ?? User::factory()->create()->id,
+            'user_id' => $user->id,
             'title' => fake()->sentence(3),
             'description' => fake()->paragraph(),
             'image_path' => fake()->imageUrl(),
             'category' => fake()->randomElement(['Shoes', 'Clothes', 'Accessories']),
             'price' => fake()->randomFloat(2, 10, 1000),
-            'status' => fake()->randomElement(['available', 'sold'])
+            'status' => fake()->randomElement(['available', 'sold']),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt
         ];
     }
 }

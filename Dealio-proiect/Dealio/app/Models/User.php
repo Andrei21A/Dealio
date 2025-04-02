@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -66,6 +68,23 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
+    public function scopeAdmins(Builder $querry): Builder
+    {
+        return $querry->where('role', 'admin');
+    }
+
+    public function scopeSellers(Builder $querry): Builder
+    {
+        return $querry->where('role', 'seller');
+    }
+
+    public function scopeUsers(Builder $querry): Builder
+    {
+        return $querry->where('role', 'user');
+    }
+
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
@@ -81,13 +100,16 @@ class User extends Authenticatable
         return $this->hasMany(Bid::class);
     }
 
-    public function orders(): HasMany {
+    public function orders(): HasMany
+    {
         return $this->hasMany(Order::class);
     }
 
-    public function reviews(): HasMany {
+    public function reviews(): HasMany
+    {
         return $this->hasMany(Review::class);
     }
+
 
     /**
      * Get the attributes that should be cast.

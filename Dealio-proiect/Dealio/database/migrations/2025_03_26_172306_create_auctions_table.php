@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamp('start_time')->nullable();
-            $table->timestamp('end_time');
+            $table->dateTime('end_time');
             $table->decimal('starting_price', 10, 2);
             $table->decimal('highest_bid', 10, 2)->nullable();
             $table->timestamps();
