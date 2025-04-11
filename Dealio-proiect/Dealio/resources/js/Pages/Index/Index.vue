@@ -1,5 +1,4 @@
 <template>
-
     <div>
         Hello
         <Link href="/products"> Show Page </Link>

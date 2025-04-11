@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="create">
+    <form @submit.prevent="update">
         <div>
             <div>
                 <label>Title</label>
@@ -28,7 +28,7 @@
             </div>
             <div>
                 <button type="submit" :disabled="form.processing">
-                    {{ form.processing ? 'Creating...' : 'Create' }}
+                    {{ form.processing ? 'Editing...' : 'Edit' }}
                 </button>
             </div>
         </div>
@@ -42,29 +42,31 @@ import { useToast } from 'vue-toastification';
 const toast = useToast();
 const categories = ['Electronics', 'Clothing', 'Furniture', 'Laptops', 'Other'];
 
+const props = defineProps({
+    product: Object
+})
+
 const form = useForm({
-    title: '',
-    description: '',
-    category: '',
-    price: null,
+    title: props.product.title,
+    description: props.product.description,
+    category: props.product.category,
+    price: props.product.price,
     user_id: 1,
 });
 
-const create = () => {
-    form.post('/products', {
+const update = () => {
+    form.put(`/products/${props.product.id}`, {
         onSuccess: () => {
-            // Formularul se resetează automat după succes
-            // Mesajul flash va fi gestionat de MainLayout
-            console.log('Product created successfully');
+
         },
         onError: (errors) => {
-            // Afișează un toast de eroare pentru erorile de validare care nu sunt deja afișate
             if (Object.keys(errors).length > 0) {
                 toast.error('Please check the form for errors.');
             }
         }
-    });
-};
+    })
+}
+
 </script>
 
 <style scoped>

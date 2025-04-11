@@ -49,7 +49,9 @@ class ProductController extends Controller
         $validated["image_path"] = 'https://via.placeholder.com/150';
 
         Product::create($validated);
-        return redirect()->route('products.index');
+
+        return redirect()->route('products.index')
+            ->with('success', 'Product was added successfully!');
     }
 
     /**
@@ -70,24 +72,48 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        return inertia(
+            'Product/Edit',
+            [
+                'product' => $product
+            ]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        $validCategories = ['Electronics', 'Clothing', 'Furniture', 'Laptops', 'Other'];
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category' => 'required|string|in:' . implode(',', $validCategories),
+            'price' => 'required|numeric',
+
+        ]);
+
+        $validated["user_id"] = 1;
+        $validated["image_path"] = 'https://via.placeholder.com/150';
+
+        $product->update($validated);
+
+        return redirect()->route('products.index')
+            ->with('success', 'Product was edited successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return redirect()->route('products.index')
+            ->with('success', "Product deleted!");
     }
 }

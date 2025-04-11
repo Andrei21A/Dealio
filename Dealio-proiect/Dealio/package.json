@@ -27,6 +27,9 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^2.0.5",
-        "vue": "^3.5.13"
+        "flowbite": "^3.1.2",
+        "vue": "^3.5.13",
+        "vue-toastification": "^2.0.0-rc.5",
+        "ziggy": "^2.4.0"
     }
 }

@@ -1,5 +1,7 @@
 import { createInertiaApp } from "@inertiajs/vue3";
 import { createApp, h } from "vue";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 import MainLayout from "./Layouts/MainLayout.vue";
 
 createInertiaApp({
@@ -20,6 +22,13 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(Toast, {
+                position: "top-right",
+                timeout: 3000,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
             .mount(el);
     },
 });
