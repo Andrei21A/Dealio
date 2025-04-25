@@ -1,21 +1,55 @@
 <template>
+    <header class="border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 w-full ">
+        <div class="container mx-auto">
+            <nav class="p-4 flex item-left justify-between">
+                <Link :href="route('products.index')" class="flex-shrink-0 font-playful text-3xl text-blue-400">
+                Dealio
+                </Link>&nbsp;
+                <div class="flex-1 flex justify-end space-y-4">
+                    <div v-if="user" class="flex items-center space-x-4">
+                        <div class="">
+                            {{ user.user_name }}
+                        </div>
+                        <Link href="/products/create" class="btn text-md ml-12">
+                        +Product</Link>
+                        <!-- <div>
+                            <Link :href="route('logout')" method="delete" as="button">Logout</Link>
+                        </div> -->
+                    </div>
+                    <div v-else>
+                        <Link :href="route('login')">Sign In</Link>
+                        <Link :href="route('user-account.create')"> Register
+                        </Link>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
     <div>
         <div class="navigation">
-            <Link href="/products">Products</Link>&nbsp;
-            <Link href="/products/create">Add Product</Link>
         </div>
-
         <slot>Default</slot>
     </div>
 </template>
 
+<script>
+export default {
+}
+</script>
+
 <script setup>
-import { Link, usePage } from '@inertiajs/vue3'
-import { watch } from 'vue'
-import { useToast } from 'vue-toastification'
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed, watch } from 'vue';
+import { useToast } from 'vue-toastification';
+import { route } from 'ziggy-js';
 
 const toast = useToast()
 const page = usePage()
+
+const user = computed(
+    () => page.props.user,
+)
+
 
 watch(() => page.props.flash, (newFlash) => {
     if (newFlash?.success) {
@@ -27,17 +61,3 @@ watch(() => page.props.flash, (newFlash) => {
     }
 }, { deep: true, immediate: true })
 </script>
-
-<style scoped>
-.navigation {
-    margin-bottom: 20px;
-}
-
-.success {
-    background-color: green;
-    color: white;
-    padding: 0.5rem 1rem;
-    margin: 1rem 0;
-    border-radius: 4px;
-}
-</style>

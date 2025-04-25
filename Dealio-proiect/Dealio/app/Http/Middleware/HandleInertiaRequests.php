@@ -43,6 +43,11 @@ class HandleInertiaRequests extends Middleware
                     'error' => $request->session()->get('error'),
                 ];
             },
+            'user' => $request->user() ? [
+                'id' => $request->user()->id,
+                'user_name' => $request->user()->user_name,
+                'email' => $request->user()->email,
+            ] : null
         ]);
     }
 }

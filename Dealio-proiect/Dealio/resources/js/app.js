@@ -3,6 +3,10 @@ import { createApp, h } from "vue";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import MainLayout from "./Layouts/MainLayout.vue";
+import '../css/app.css';
+
+import { ZiggyVue } from "ziggy-js";
+import { Ziggy } from './ziggy'; 
 
 createInertiaApp({
     resolve: async (name) => {
@@ -29,6 +33,7 @@ createInertiaApp({
                 pauseOnHover: true,
                 draggable: true,
             })
+            .use(ZiggyVue, Ziggy)
             .mount(el);
     },
 });
