@@ -4,9 +4,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RealtorProductImageController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserREgistrationController;
+use App\Http\Controllers\VendorProductImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('products', ProductController::class)
@@ -31,4 +33,12 @@ Route::delete('logout', [AuthController::class, 'destroy'])
 
 Route::resource('user-account', UserAccountController::class)
     ->only(['create', 'store']);
+
+Route::prefix('vendor')
+    ->name('vendor.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::resource('product.image', VendorProductImageController::class)
+            ->only(['create', 'store']);
+    });
 

@@ -15,6 +15,7 @@ export default {
                 body: ["Poppins", "sans-serif"],
                 subtle: ["Poppins", "sans-serif"],
                 accent: ["Montserrat", "sans-serif"],
+                form: ["Inter", "sans-serif"],
             },
         },
     },

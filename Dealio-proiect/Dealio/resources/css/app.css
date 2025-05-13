@@ -3,12 +3,23 @@
 @tailwind utilities;
 
 @layer components {
+
+    body {
+        @apply font-body;
+    }
+
+    input,
+    select,
+    textarea {
+        @apply border border-black rounded px-2 py-1 w-full max-w-md focus:outline-none focus:ring-1 focus:ring-black dark:border-white dark:focus:ring-white;
+    }
+
     .btn {
         @apply border bg-gray-900 text-gray-100 px-4 py-2 rounded shadow-md hover:bg-gray-200 hover:text-gray-900 transition dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-900 dark:hover:text-gray-100;
     }
 
-    body {
-        @apply font-body;
+    .btn-category {
+        @apply border bg-white text-gray-900 px-10 py-5 shadow-md hover:bg-gray-100  transition dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 text-form-subtitle rounded-xl;
     }
 
     /* Typography Styles */
@@ -16,8 +27,16 @@
         @apply font-display text-4xl text-gray-900 dark:text-gray-100 leading-tight align-baseline;
     }
 
+    .text-form-title {
+        @apply font-playful text-4xl text-gray-900 dark:text-gray-300 leading-tight align-baseline;
+    }
+
     .text-subtitle {
-        @apply font-accent text-2xl font-semibold text-gray-800 dark:text-gray-200 leading-snug;
+        @apply font-accent text-2xl font-semibold text-gray-800 dark:text-gray-300 leading-snug;
+    }
+
+    .text-form-subtitle {
+        @apply font-body md:text-lg font-semibold text-gray-800 dark:text-gray-300 leading-snug;
     }
 
     .text-description {
@@ -26,6 +45,18 @@
 
     /* Optional: a tiny text version for footers or legal info */
     .text-caption {
-        @apply font-subtle text-xs text-gray-500 dark:text-gray-400 tracking-wide;
+        @apply font-subtle text-xs text-gray-500 dark:text-gray-300 tracking-wide;
+    }
+
+    .text-form {
+        @apply font-playful text-base text-gray-800 dark:text-gray-200;
+    }
+
+    .scrollbar-hidden::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hidden {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 }

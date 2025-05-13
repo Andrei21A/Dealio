@@ -30,6 +30,8 @@ class ProductFactory extends Factory
             'category' => fake()->randomElement(['Shoes', 'Clothes', 'Accessories']),
             'price' => fake()->randomFloat(2, 10, 1000),
             'status' => fake()->randomElement(['available', 'sold']),
+            'location' => fake()->city(),
+            'auction_status' => $this->faker->randomElement(['not_started', 'ongoing', 'ended']),
             'created_at' => $createdAt,
             'updated_at' => $createdAt
         ];

@@ -16,10 +16,12 @@ class Product extends Model
     protected $fillable = [
         'title',
         'description',
+        'location',
         'image_path',
         'category',
         'price',
         'status',
+        'auction_status',
         'user_id'
     ];
 
@@ -30,26 +32,76 @@ class Product extends Model
             ->withCount('reviews');
     }
 
-    public function scopeMostReviews(Builder $querry): Builder
+    public function scopeTitle(Builder $query, $title): Builder
     {
-        return $querry->withCount('reviews')
+        return $query->where('title', 'LIKE', '%' . $title . '%');
+    }
+
+    public function scopeMostReviews(Builder $query): Builder
+    {
+        return $query->withCount('reviews')
             ->orderBy('reviews_count', 'desc');
     }
 
-    public function scopeMostRated(Builder $querry): Builder
+    public function scopeMostRated(Builder $query): Builder
     {
-        return $querry->withAvg('reviews', 'rating')
+        return $query->withAvg('reviews', 'rating')
             ->orderBy('reviews_avg_rating', 'desc');
     }
 
-    public function scopeAvailable(Builder $querry): Builder
+    public function scopeElectronics(Builder $query): Builder
     {
-        return $querry->where('status', 'available');
+        return $query->where('category', 'Electronics');
     }
 
-    public function scopePopular(Builder $querry, $from = null, $to = null): Builder
+    public function scopeClothing(Builder $query): Builder
     {
-        return $querry->withCount([
+        return $query->where('category', 'Clothing');
+    }
+
+    public function scopeFurniture(Builder $query): Builder
+    {
+        return $query->where('category', 'Furniture');
+    }
+
+    public function scopeLaptopsPhones(Builder $query): Builder
+    {
+        return $query->where('category', 'Laptops/Phones');
+    }
+
+    public function scopeBooks(Builder $query): Builder
+    {
+        return $query->where('category', 'Books');
+    }
+
+    public function scopeToys(Builder $query): Builder
+    {
+        return $query->where('category', 'Toys');
+    }
+
+    public function scopeSport(Builder $query): Builder
+    {
+        return $query->where('category', 'Sport');
+    }
+
+    public function scopeBeauty(Builder $query): Builder
+    {
+        return $query->where('category', 'Beauty');
+    }
+
+    public function scopeOther(Builder $query): Builder
+    {
+        return $query->where('category', 'Other');
+    }
+
+    public function scopeAvailable(Builder $query): Builder
+    {
+        return $query->where('status', 'available');
+    }
+
+    public function scopePopular(Builder $query, $from = null, $to = null): Builder
+    {
+        return $query->withCount([
             'reviews' => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)
         ])
             ->orderBy('reviews_count', 'desc');
@@ -59,6 +111,11 @@ class Product extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImage::class);
     }
 
     public function auctions(): HasOne
@@ -76,14 +133,14 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
-    private function dateRangeFilter(Builder $querry, $from = null, $to = null)
+    private function dateRangeFilter(Builder $query, $from = null, $to = null)
     {
         if ($from && !$to) {
-            $querry->where('created_at', '>=', $from);
+            $query->where('created_at', '>=', $from);
         } else if (!$from && $to) {
-            $querry->where('created_at', '<=', $to);
+            $query->where('created_at', '<=', $to);
         } else if ($from && $to) {
-            $querry->whereBetween('created_at', [$from, $to]);
+            $query->whereBetween('created_at', [$from, $to]);
         }
     }
 
