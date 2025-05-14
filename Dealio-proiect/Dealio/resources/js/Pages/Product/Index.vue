@@ -24,17 +24,6 @@
 
       <!-- Product Section -->
       <div class="w-full">
-        <div class="grid">
-          <div class="text-form-title my-5 mx-4 border-b border-gray-300">Browse Categories</div>
-
-          <div class="flex overflow-x-auto scrollbar-hidden space-x-4 px-4 py-4">
-            <button v-for="category in categories" :key="category" class="btn-category"
-              :class="{ 'bg-purple-600 text-white hover:bg-purple-700': category === selectedCategory }"
-              @click="selectCategory(category)">
-              {{ category }}
-            </button>
-          </div>
-        </div>
 
         <!-- Product Grid -->
         <div v-if="products.length && searchTerm"
@@ -49,7 +38,7 @@
           </div>
         </div>
 
-        <div v-else-if="!searchTerm && !selectedCategory">
+        <div v-else-if="!searchTerm && !hasActiveFilters">
           <div class="text-form-title my-5 mx-4 border-b border-gray-300">Most Popular</div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 py-10">
             <Box v-for="product in products" :key="product.id" :product="product" />
@@ -73,6 +62,7 @@ import ProductFilters from '@/Components/UI/ProductFilters.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import { Icon } from '@iconify/vue';
 import { router, usePage } from '@inertiajs/vue3';
+import { debounce } from 'lodash';
 import { computed, ref, watch } from 'vue';
 import { route } from 'ziggy-js';
 
@@ -81,10 +71,7 @@ defineOptions({ layout: MainLayout });
 const page = usePage();
 const user = computed(() => page.props.user);
 
-const categories = [
-  'Electronics', 'Clothing', 'Furniture', 'Laptops/Phones',
-  'Books', 'Toys', 'Sport', 'Beauty', 'Other',
-];
+
 
 const props = defineProps({
   products: Array,
@@ -93,12 +80,15 @@ const props = defineProps({
 
 const searchTerm = ref(props.search || '');
 const selectedCategory = ref(props.category || '');
-const filters = ref({}); // Store applied filters from the sidebar
 
-function selectCategory(category) {
-  selectedCategory.value = (selectedCategory.value === category) ? '' : category;
-  applyFilters();
-}
+const filters = ref({});
+
+const hasActiveFilters = computed(() => {
+  return Object.values(filters.value).some(value => {
+    return Array.isArray(value) ? value.length > 0 : value !== null && value !== '' && value !== 'all';
+  });
+});
+
 
 function handleFilterChange(newFilters) {
   filters.value = newFilters;
@@ -116,7 +106,7 @@ function applyFilters() {
   });
 }
 
-watch(searchTerm, () => {
+watch(searchTerm, debounce(() => {
   applyFilters();
-});
+}, 500));
 </script>

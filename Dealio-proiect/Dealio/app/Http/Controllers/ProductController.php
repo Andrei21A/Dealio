@@ -43,9 +43,9 @@ class ProductController extends Controller
         }
 
         if ($request->filled('maxPrice')) {
-            $query->where('price', '<=', $request->maxPrice);
+            $query->where('price', '<=', $request->maxPrice)->orderBy('price');
         } else {
-            $query->where('price', '<=', 50000);
+            $query->where('price', '<=', 5000)->orderBy('price');
         }
 
         //Filter by location
@@ -63,15 +63,18 @@ class ProductController extends Controller
             }
         }
 
-        // If no filters applied, show most rated
         if (
-            !$request->filled('search') && !$request->filled('category') &&
-            !$request->filled('categories') && !$request->filled('minPrice') &&
-            !$request->filled('maxPrice') && !$request->filled('location') &&
-            !$request->filled('listingType')
+            !$request->filled('search') &&
+            !$request->filled('category') &&
+            !(is_array($request->categories) && count($request->categories) > 0) &&
+            !$request->filled('minPrice') &&
+            !$request->filled('maxPrice') &&
+            !$request->filled('location') &&
+            ($request->listingType === null || $request->listingType === 'all')
         ) {
             $query->mostRated()->limit(8);
         }
+        
 
         return inertia(
             'Product/Index',
